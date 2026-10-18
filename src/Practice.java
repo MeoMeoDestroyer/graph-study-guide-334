@@ -2,7 +2,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import java.util.ArrayList;
+import java.util.Collections;
 public class Practice {
 
   /**
@@ -65,9 +66,22 @@ public class Practice {
    * @return a sorted list of all reachable vertex values by 
    */
   public static List<Integer> sortedReachable(Vertex<Integer> starting) {
-    return null;
-  }
+    List<Integer> result = new ArrayList<>();
+    collect(starting, new HashSet<>(), result);
 
+    Collections.sort(result);
+    return result;
+    }
+  private static void collect(Vertex<Integer> current, Set<Vertex<Integer>> visited,   List<Integer> result) {
+    if (current == null || visited.contains(current)) return;
+
+    visited.add(current);
+    result.add(current.data);
+
+    for (Vertex<Integer> neighbor : current.neighbors){
+      collect(neighbor, visited, result);
+    }
+  }
   /**
    * Returns a sorted list of all values reachable from the given starting vertex in the provided graph.
    * The graph is represented as a map where each key is a vertex and its corresponding value is a set of neighbors.
