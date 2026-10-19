@@ -199,6 +199,21 @@ public class Practice {
    * @return true if a person in the extended network works at the specified company, false otherwise
    */
   public static boolean hasExtendedConnectionAtCompany(Professional person, String companyName) {
+    return hasConnection(person, companyName, new HashSet<>());
+  }
+
+  // true if current or anyone in their network works at companyName
+  private static boolean hasConnection(Professional current, String companyName, Set<Professional> visited) {
+    // nobody or if alr check the person -> return false
+    if (current == null || visited.contains(current)) return false;
+    visited.add(current);
+
+    if (current.getCompany().equals(companyName)) return true;
+
+    for (Professional connection : current.getConnections()) {
+
+      if (hasConnection(connection, companyName, visited)) return true;
+    }
     return false;
   }
 
@@ -275,7 +290,7 @@ public class Practice {
     int curC = current[1];
 
     for (int[] direction : directions) {
-      
+
       int newR = curR + direction[0];
       int newC = curC + direction[1];
 
